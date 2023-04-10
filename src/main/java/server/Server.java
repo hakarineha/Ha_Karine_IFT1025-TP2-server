@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Server {
 
@@ -16,9 +18,10 @@ public class Server {
     public final static String LOAD_COMMAND = "CHARGER";
     private final ServerSocket server;
     private Socket client;
-    private ObjectInputStream objectInputStream;
-    private ObjectOutputStream objectOutputStream;
+    private ObjectInputStream objectInputStream; // note à moi-même: pour lire
+    private ObjectOutputStream objectOutputStream; // note à moi-même: pour écrire l'objet sur un stream dans son format sérialisé
     private final ArrayList<EventHandler> handlers;
+
 
     public Server(int port) throws IOException {
         this.server = new ServerSocket(port, 1);
@@ -26,10 +29,21 @@ public class Server {
         this.addEventHandler(this::handleEvents);
     }
 
+    /**
+     * Ajouter un handler à la liste handlers
+     * @param h est un handler.
+     */
     public void addEventHandler(EventHandler h) {
         this.handlers.add(h);
     }
 
+    /**
+     * Appelle la fonction handle() de tous les handlers définis avec la commande et l'argument spécifié.
+     * En d'autres mots, la méthode fait passer le message aux objets qui font la manipulation des événements
+     * en découpant le traitement d'un événement.
+     * @param cmd la commande
+     * @param arg les arguments
+     */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
@@ -41,8 +55,9 @@ public class Server {
             try {
                 client = server.accept();
                 System.out.println("Connecté au client: " + client);
-                objectInputStream = new ObjectInputStream(client.getInputStream());
                 objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+                objectOutputStream.flush();
+                objectInputStream = new ObjectInputStream(client.getInputStream());
                 listen();
                 disconnect();
                 System.out.println("Client déconnecté!");
@@ -55,6 +70,7 @@ public class Server {
     public void listen() throws IOException, ClassNotFoundException {
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
+            System.out.println("request obtained from client is" + line);
             Pair<String, String> parts = processCommandLine(line);
             String cmd = parts.getKey();
             String arg = parts.getValue();
@@ -115,7 +131,11 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
         // TODO: implémenter cette méthode
-        ArrayList<Course> courses = getCoursesFromFile();
+        List<Course> courses = getCoursesFromFile()
+                .stream()
+                .filter(course -> course.getSession().equalsIgnoreCase(arg)) //filtre basé sur ce predicate (qui est une condition)
+                .collect(Collectors.toList()); // on collecte, recueille ce qu'on a filtré, et donc convertir le stream filtré en liste
+
         try {
             objectOutputStream.writeObject(courses);
         } catch (IOException e) {
@@ -133,9 +153,6 @@ public class Server {
         // TODO: implémenter cette méthode
         try {
             RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
-//            FileOutputStream inscriptionFile = new FileOutputStream("/Users/karineha/Desktop/IFT1025/Ha_Karine_IFT1025-TP2-server/src/main/java/server/data/inscription.txt");
-//            ObjectOutputStream oosForInscriptionFile = new ObjectOutputStream(inscriptionFile);
-//            oosForInscriptionFile.write
             FileWriter fwInscription = new FileWriter("/Users/karineha/Desktop/IFT1025/Ha_Karine_IFT1025-TP2-server/src/main/java/server/data/inscription.txt");
             BufferedWriter writer = new BufferedWriter(fwInscription);
             String session = registrationForm.getCourse().getSession();
@@ -149,8 +166,17 @@ public class Server {
                     + email + "\n";
             writer.append(inscription);
             writer.close();
+
+            objectOutputStream.writeObject(true);
+
         } catch (IOException | ClassNotFoundException e) {
             System.err.print(e);
+        }
+
+        try {
+            objectOutputStream.writeObject(false);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
