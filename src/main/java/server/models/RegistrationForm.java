@@ -56,6 +56,11 @@ public class RegistrationForm implements Serializable {
     public void setCourse(Course course) {
         this.course = course;
     }
+    public String getInscription(){
+        return getCourse().getSession() + "\t" + getCourse().getCode()
+                + "\t" + getMatricule() + "\t" + getPrenom()
+                + "\t" + getNom() + "\t" + getEmail() + "\n";
+    }
 
     @Override
     public String toString() {

@@ -2,6 +2,7 @@ package client.cli;
 
 import server.EventHandler;
 import server.models.Course;
+import server.models.RegistrationForm;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -74,11 +75,51 @@ public class Client {
 
     public boolean registerStudent(String prenom, String nom, String email, String matricule, String codeCours, List<Course> coursesInSession) {
         //TODO: check that the course id offered in that session
+        for (int i = 0; i < coursesInSession.size(); i++) {
+            if (coursesInSession.get(i).getCode().equals(codeCours)){
+                Course course = new Course(coursesInSession.get(i).getName(), codeCours, coursesInSession.get(i).getSession());
+
+                Request request = new Request(Commande.INSCRIRE, "");
+
+                try {
+                    objectOutputStream.writeObject(request);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    objectOutputStream.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                RegistrationForm registrationForm = new RegistrationForm(prenom, nom, email, matricule, course);
+                try {
+                    objectOutputStream.writeObject(registrationForm);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    objectOutputStream.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    return (boolean) objectInputStream.readObject();
+                } catch (IOException | ClassNotFoundException e) {
+                    System.err.print(e);
+                }
+            } else return false;
+        }
         //TODO: envoyer Request(Commande.INSCRIRE, "") ensuite tu flush.
         //TODO: objet RegistrationForm, envoies, flush
         //TODO: reçois une confirmation en boolean du serveur
 
-
         return false;
+    }
+    public String isEmailValid(String email){
+        //TODO: implémenter cette méthode
+        System.out.println("Reviens");
+
+        return email;
     }
 }
