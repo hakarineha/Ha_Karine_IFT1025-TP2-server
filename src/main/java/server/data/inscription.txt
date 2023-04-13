@@ -1,1 +1,5 @@
-Automne	IFT2255	12345678	Michalis	Famelis	mfamelis@iro.umontreal.ca
+Hiver	IFT1025	20253022	Karine	Ha	karine.ha@umontreal.ca
+Hiver	IFT2125	12345678	v	a	v@s.com
+Hiver	IFT1025	12345608	v	ah	v@s.com
+Automne	IFT1015	12341234	sa	as	ass@d.com
+Automne	IFT1227	09898787	ks	ja	s@.c

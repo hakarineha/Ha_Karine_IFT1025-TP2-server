@@ -153,17 +153,8 @@ public class Server {
         // TODO: implémenter cette méthode
         try {
             RegistrationForm registrationForm = (RegistrationForm) objectInputStream.readObject();
-            FileWriter fwInscription = new FileWriter("/Users/karineha/Desktop/IFT1025/Ha_Karine_IFT1025-TP2-server/src/main/java/server/data/inscription.txt");
+            FileWriter fwInscription = new FileWriter("/Users/karineha/Desktop/IFT1025/Ha_Karine_IFT1025-TP2-server/src/main/java/server/data/inscription.txt", true);
             BufferedWriter writer = new BufferedWriter(fwInscription);
-//            String session = registrationForm.getCourse().getSession();
-//            String codeCours = registrationForm.getCourse().getCode();
-//            String matricule = registrationForm.getMatricule();
-//            String prenom = registrationForm.getPrenom();
-//            String nom = registrationForm.getNom();
-//            String email = registrationForm.getEmail();
-//            String inscription = session + "\t" + codeCours + "\t"
-//                    + matricule + "\t" + prenom + "\t" + nom + "\t"
-//                    + email + "\n";
             String inscription = registrationForm.getInscription();
             writer.append(inscription);
             writer.close();
