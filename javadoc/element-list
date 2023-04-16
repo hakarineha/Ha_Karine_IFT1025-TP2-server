@@ -1,0 +1,8 @@
+module:gui
+org.example.gui
+module:TP2_IFT1025
+client.controller
+client.model
+client.view.cli
+server
+server.models

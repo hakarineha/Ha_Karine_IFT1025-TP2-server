@@ -14,7 +14,16 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * La classe MessageBox permet l'affichage de boîtes de dialogue qui avise l'utilisateur si son inscription a été enregistrée ou si elle contenait une erreur.
+ */
+
 public class MessageBox {
+    /**
+     * Affiche une boîte de dialogue indiquant quelles sont les erreurs d'entrées de l'utilisateur durant sa tentative d'inscription à un cours.
+     * @param titre Le titre de la fenêtre.
+     * @param message Le message d'erreur affiché dans la boîte.
+     */
     public static void displayError(String titre, String message) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -27,19 +36,16 @@ public class MessageBox {
         header.setPadding(new Insets(5, 105, 5, 5));
         header.setAlignment(Pos.TOP_LEFT);
 
-
         ImageView errorIcon = new ImageView(new Image(MessageBox.class.getResourceAsStream("errorIcon.png")));
         errorIcon.setFitHeight(20);
         errorIcon.setFitWidth(20);
 
-
         hBox.getChildren().add(header);
         hBox.getChildren().add(errorIcon);
 
-
         Label label = new Label();
         label.setText(message);
-        label.setPadding(new Insets(10, 10, 10, 10));
+        label.setPadding(new Insets(10, 20, 10, 20));
         Button boutonOk = new Button("OK");
         boutonOk.setOnAction(e -> window.close());
 
@@ -52,6 +58,11 @@ public class MessageBox {
         window.showAndWait();
     }
 
+    /**
+     * Affiche une boîte de dialogue indiquant quelles sont les erreurs d'entrées de l'utilisateur durant sa tentative d'inscription à un cours.
+     * @param titre Le titre de la fenêtre.
+     * @param message Le message affiché dans la boîte.
+     */
     public static void displayInfo(String titre, String message) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
@@ -64,19 +75,16 @@ public class MessageBox {
         header.setPadding(new Insets(5, 105, 5, 5));
         header.setAlignment(Pos.TOP_LEFT);
 
-
-        ImageView errorIcon = new ImageView(new Image(MessageBox.class.getResourceAsStream("infoIcon.png")));
-        errorIcon.setFitHeight(20);
-        errorIcon.setFitWidth(20);
-
+        ImageView infoIcon = new ImageView(new Image(MessageBox.class.getResourceAsStream("infoIcon.png")));
+        infoIcon.setFitHeight(20);
+        infoIcon.setFitWidth(20);
 
         hBox.getChildren().add(header);
-        hBox.getChildren().add(errorIcon);
-
+        hBox.getChildren().add(infoIcon);
 
         Label label = new Label();
         label.setText(message);
-        label.setPadding(new Insets(10, 10, 10, 10));
+        label.setPadding(new Insets(10, 20, 10, 20));
         Button boutonOk = new Button("OK");
         boutonOk.setOnAction(e -> window.close());
 

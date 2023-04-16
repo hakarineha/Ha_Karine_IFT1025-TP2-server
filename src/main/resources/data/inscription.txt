@@ -1,0 +1,2 @@
+Hiver	IFT1025	20253022	Karine	Ha	karine.ha@umontreal.ca
+Automne	IFT2255	12345678	Michalis	Famelis	mfamelis@iro.umontreal.ca

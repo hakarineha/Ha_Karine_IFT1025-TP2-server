@@ -2,11 +2,22 @@ package server.models;
 
 import java.io.Serializable;
 
+/**
+ * Modèle d'un cours, plus précisément les caractéristiques définissant un cours.
+ */
+
 public class Course implements Serializable {
 
     private String name;
     private String code;
     private String session;
+
+    /**
+     * Constructeur d'un cours.
+     * @param name le nom du cours
+     * @param code le code de cours
+     * @param session la session durant laquelle le cours a lieu
+     */
 
     public Course(String name, String code, String session) {
         this.name = name;

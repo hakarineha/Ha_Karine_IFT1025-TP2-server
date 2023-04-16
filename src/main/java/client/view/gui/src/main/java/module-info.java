@@ -1,9 +1,9 @@
-module org.example.gui {
+module gui {
     requires javafx.controls;
     requires javafx.fxml;
     requires org.controlsfx.controls;
-    requires controller;
+    requires TP2_IFT1025;
 
-    opens org.example.gui to javafx.fxml;
+    opens gui to javafx.fxml;
     exports org.example.gui;
 }
